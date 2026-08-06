@@ -31,6 +31,9 @@
     "brief_lease_minutes": { "type": "integer", "minimum": 1 },
     "presentation_compile_concurrency": { "type": "integer", "minimum": 1 },
     "presentation_lane_b_concurrency": { "type": "integer", "minimum": 1 },
+    "crm_detection_batch": { "type": "integer", "minimum": 1, "maximum": 10 },
+    "crm_detection_lease_minutes": { "type": "integer", "minimum": 1, "maximum": 120 },
+    "crm_detection_max_docs": { "type": "integer", "minimum": 1 },
 
     "retrieval_enabled": { "type": "boolean" },
     "p1_bedrock_priority": { "type": "boolean" },
@@ -38,6 +41,8 @@
     "p0_bedrock_priority": { "type": "boolean" },
     "scheduler_enabled": { "type": "boolean" },
     "brief_scheduler_enabled": { "type": "boolean" },
-    "rbac_enforce": { "type": "boolean" }
+    "rbac_enforce": { "type": "boolean" },
+    "onboarding_kick": { "type": "boolean" },
+    "crm_detection_enabled": { "type": "boolean" }
   }
 }
