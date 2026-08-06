@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/synoptic-ai/synoptic-runtime-config/runtime.schema.json",
+  "title": "Synoptic runtime configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "retrieval_route_model": { "type": "string", "minLength": 1 },
+    "p0_model": { "type": "string", "minLength": 1 },
+    "p1_model": { "type": "string", "minLength": 1 },
+    "p2_grounding_model": { "type": "string", "minLength": 1 },
+    "p3_answer_model": { "type": "string", "minLength": 1 },
+    "compiler_model": { "type": "string", "minLength": 1 },
+    "presentation_deck_planner_model": { "type": "string", "minLength": 1 },
+
+    "retrieval_top_k": { "type": "integer", "minimum": 1 },
+    "p0_batch_size": { "type": "integer", "minimum": 1 },
+    "p0_concurrency": { "type": "integer", "minimum": 1 },
+    "p1_concurrency": { "type": "integer", "minimum": 1 },
+    "p1_quote_target_chars": { "type": "integer", "minimum": 1 },
+    "p1_summary_only_doc_threshold": { "type": "integer", "minimum": 1 },
+    "p1_summary_only_token_threshold": { "type": "integer", "minimum": 1 },
+    "p2_concurrency": { "type": "integer", "minimum": 1 },
+    "p2_grounding_batch_char_budget": { "type": "integer", "minimum": 1 },
+    "p3_input_char_budget": { "type": "integer", "minimum": 1 },
+    "default_window_days": { "type": "integer", "minimum": 1 },
+    "sync_dispatch_batch": { "type": "integer", "minimum": 1 },
+    "brief_active_days": { "type": "integer", "minimum": 1, "maximum": 90 },
+    "brief_dispatch_batch": { "type": "integer", "minimum": 1 },
+    "brief_local_hour": { "type": "integer", "minimum": 0, "maximum": 23 },
+    "brief_lease_minutes": { "type": "integer", "minimum": 1 },
+    "presentation_compile_concurrency": { "type": "integer", "minimum": 1 },
+    "presentation_lane_b_concurrency": { "type": "integer", "minimum": 1 },
+
+    "retrieval_enabled": { "type": "boolean" },
+    "p1_bedrock_priority": { "type": "boolean" },
+    "p0_enabled": { "type": "boolean" },
+    "p0_bedrock_priority": { "type": "boolean" },
+    "scheduler_enabled": { "type": "boolean" },
+    "brief_scheduler_enabled": { "type": "boolean" },
+    "rbac_enforce": { "type": "boolean" }
+  }
+}

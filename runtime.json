@@ -1,0 +1,16 @@
+{
+  "p0_model": "gemini-3.5-flash-lite",
+  "p1_model": "gemini-3.5-flash-lite",
+  "p0_enabled": true,
+  "p0_batch_size": 10,
+  "compiler_model": "us.anthropic.claude-sonnet-4-6",
+  "p1_concurrency": 100,
+  "p2_concurrency": 50,
+  "p3_answer_model": "gemini-3.1-pro-preview",
+  "scheduler_enabled": true,
+  "p2_grounding_model": "gemini-3.6-flash",
+  "p3_input_char_budget": 800000,
+  "brief_scheduler_enabled": true,
+  "presentation_lane_b_concurrency": 24,
+  "presentation_compile_concurrency": 32
+}
