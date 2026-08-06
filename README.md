@@ -1,6 +1,9 @@
 # Synoptic runtime config
 
-This public repository is Synoptic's reviewed runtime-configuration source.
+This public repository is Synoptic's complete reviewed runtime configuration.
+
+`runtime.json` contains every resolved setting. It has no override/default split. Every schema key
+is required, so deleting a setting fails validation instead of silently changing behavior.
 
 ## Change a value
 

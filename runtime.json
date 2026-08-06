@@ -1,16 +1,50 @@
 {
-  "p0_model": "gemini-3.5-flash-lite",
-  "p1_model": "gemini-3.5-flash-lite",
+  "retrieval_enabled": true,
+  "retrieval_route_model": "gemini-3.6-flash",
+  "retrieval_top_k": 15,
+
   "p0_enabled": true,
+  "p0_model": "gemini-3.5-flash-lite",
   "p0_batch_size": 10,
-  "compiler_model": "us.anthropic.claude-sonnet-4-6",
+  "p0_concurrency": 100,
+  "p0_bedrock_priority": true,
+
+  "p1_model": "gemini-3.5-flash-lite",
   "p1_concurrency": 100,
-  "p2_concurrency": 50,
-  "p3_answer_model": "gemini-3.1-pro-preview",
-  "scheduler_enabled": true,
+  "p1_bedrock_priority": true,
+  "p1_quote_target_chars": 400,
+  "p1_summary_only_doc_threshold": 2000,
+  "p1_summary_only_token_threshold": 5000000,
+
   "p2_grounding_model": "gemini-3.6-flash",
+  "p2_concurrency": 50,
+  "p2_grounding_batch_char_budget": 120000,
+
+  "p3_answer_model": "gemini-3.1-pro-preview",
   "p3_input_char_budget": 800000,
+
+  "compiler_model": "us.anthropic.claude-sonnet-4-6",
+  "default_window_days": 30,
+  "rbac_enforce": true,
+
+  "scheduler_enabled": true,
+  "sync_dispatch_batch": 10,
+  "onboarding_kick": true,
+
   "brief_scheduler_enabled": true,
+  "brief_active_days": 7,
+  "brief_dispatch_batch": 10,
+  "brief_local_hour": 5,
+  "brief_lease_minutes": 20,
+
+  "crm_detection_enabled": true,
+  "crm_detection_batch": 1,
+  "crm_detection_lease_minutes": 30,
+  "crm_detection_max_docs": 25,
+
+  "presentation_deck_planner_model": "gemini-3.1-pro-preview",
+  "presentation_compile_concurrency": 32,
   "presentation_lane_b_concurrency": 24,
-  "presentation_compile_concurrency": 32
+
+  "doc_viewer_users": ""
 }

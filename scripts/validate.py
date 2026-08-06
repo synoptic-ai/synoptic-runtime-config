@@ -18,6 +18,9 @@ def main():
 
     properties = schema["properties"]
     errors = []
+    for key in schema.get("required", []):
+        if key not in config:
+            errors.append(f"{key}: required key is missing")
     for key, value in config.items():
         spec = properties.get(key)
         if spec is None:
@@ -29,7 +32,8 @@ def main():
         valid = (
             expected == "boolean" and isinstance(value, bool)
             or expected == "integer" and isinstance(value, int) and not isinstance(value, bool)
-            or expected == "string" and isinstance(value, str) and bool(value.strip())
+            or expected == "string" and isinstance(value, str)
+            and (key == "doc_viewer_users" or bool(value.strip()))
         )
         if not valid:
             errors.append(f"{key}: expected {expected}")
@@ -41,6 +45,8 @@ def main():
                 errors.append(f"{key}: above maximum {spec['maximum']}")
         if isinstance(value, str) and EMAIL.search(value):
             errors.append(f"{key}: email addresses are forbidden in this public repository")
+        if key == "doc_viewer_users" and value:
+            errors.append("doc_viewer_users: must stay empty in this public repository")
 
     if errors:
         raise SystemExit("\n".join(errors))
