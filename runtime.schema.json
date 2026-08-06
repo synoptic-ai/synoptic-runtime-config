@@ -10,6 +10,7 @@
     "p1_model",
     "p2_grounding_model",
     "p3_answer_model",
+    "presentability_verifier_model",
     "compiler_model",
     "presentation_deck_planner_model",
     "retrieval_top_k",
@@ -50,6 +51,7 @@
     "p1_model": { "type": "string", "minLength": 1 },
     "p2_grounding_model": { "type": "string", "minLength": 1 },
     "p3_answer_model": { "type": "string", "minLength": 1 },
+    "presentability_verifier_model": { "type": "string", "minLength": 1 },
     "compiler_model": { "type": "string", "minLength": 1 },
     "presentation_deck_planner_model": { "type": "string", "minLength": 1 },
 
