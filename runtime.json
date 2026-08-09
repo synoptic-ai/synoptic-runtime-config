@@ -10,7 +10,7 @@
   "p0_bedrock_priority": true,
 
   "p1_model": "gemini-3.5-flash-lite",
-  "p1_concurrency": 100,
+  "p1_concurrency": 600,
   "p1_bedrock_priority": true,
   "p1_quote_target_chars": 400,
   "p1_summary_only_doc_threshold": 2000,
