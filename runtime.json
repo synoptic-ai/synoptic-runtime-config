@@ -4,6 +4,7 @@
   "brief_lease_minutes": 20,
   "brief_local_hour": 5,
   "brief_scheduler_enabled": true,
+  "chat_agent_loop_v2": true,
   "chat_agent_model": "gemini-3.1-pro-preview",
   "chat_max_concurrent_runs_per_org": 4,
   "chat_max_concurrent_runs_per_user": 2,
