@@ -43,7 +43,35 @@
     "rbac_enforce",
     "onboarding_kick",
     "crm_detection_enabled",
-    "doc_viewer_users"
+    "doc_viewer_users",
+
+    "p2_merge_model",
+    "p2_merge_tree_k",
+    "p2_merge_target_chars",
+    "p2_merge_char_budget",
+    "p2_merge_max_tokens",
+    "p3_answer_max_tokens",
+
+    "collection_map_model",
+    "collection_resolve_model",
+    "collection_lookback_days",
+    "collection_map_concurrency",
+    "collection_resolve_max_forms",
+    "collection_carry_forward_max_chars",
+    "collection_retired_carry_max",
+    "collection_require_shared_authority",
+    "collection_run_cost_ceiling_usd",
+    "collection_org_daily_cost_ceiling_usd",
+    "collection_gate_unjudged_pct",
+    "collection_gate_unresolved_pct",
+    "collection_gate_collapse_pct",
+    "collection_gate_explosion_pct",
+    "collection_gate_churn_pct",
+
+    "chat_agent_model",
+    "chat_max_concurrent_runs_per_user",
+    "chat_max_concurrent_runs_per_org",
+    "chat_max_run_minutes"
   ],
   "properties": {
     "retrieval_route_model": { "type": "string", "minLength": 1 },
@@ -86,6 +114,34 @@
     "rbac_enforce": { "type": "boolean" },
     "onboarding_kick": { "type": "boolean" },
     "crm_detection_enabled": { "type": "boolean" },
-    "doc_viewer_users": { "type": "string", "maxLength": 0 }
+    "doc_viewer_users": { "type": "string", "maxLength": 0 },
+
+    "p2_merge_model": { "type": "string", "minLength": 1 },
+    "p2_merge_tree_k": { "type": "integer", "minimum": 1 },
+    "p2_merge_target_chars": { "type": "integer", "minimum": 1 },
+    "p2_merge_char_budget": { "type": "integer", "minimum": 1 },
+    "p2_merge_max_tokens": { "type": "integer", "minimum": 1 },
+    "p3_answer_max_tokens": { "type": "integer", "minimum": 1 },
+
+    "collection_map_model": { "type": "string", "minLength": 1 },
+    "collection_resolve_model": { "type": "string", "minLength": 1 },
+    "collection_lookback_days": { "type": "integer", "minimum": 1 },
+    "collection_map_concurrency": { "type": "integer", "minimum": 1 },
+    "collection_resolve_max_forms": { "type": "integer", "minimum": 1 },
+    "collection_carry_forward_max_chars": { "type": "integer", "minimum": 1 },
+    "collection_retired_carry_max": { "type": "integer", "minimum": 0 },
+    "collection_require_shared_authority": { "type": "integer", "minimum": 0 },
+    "collection_run_cost_ceiling_usd": { "type": "integer", "minimum": 0 },
+    "collection_org_daily_cost_ceiling_usd": { "type": "integer", "minimum": 0 },
+    "collection_gate_unjudged_pct": { "type": "integer", "minimum": 0 },
+    "collection_gate_unresolved_pct": { "type": "integer", "minimum": 0 },
+    "collection_gate_collapse_pct": { "type": "integer", "minimum": 0 },
+    "collection_gate_explosion_pct": { "type": "integer", "minimum": 0 },
+    "collection_gate_churn_pct": { "type": "integer", "minimum": 0 },
+
+    "chat_agent_model": { "type": "string", "minLength": 1 },
+    "chat_max_concurrent_runs_per_user": { "type": "integer", "minimum": 1 },
+    "chat_max_concurrent_runs_per_org": { "type": "integer", "minimum": 1 },
+    "chat_max_run_minutes": { "type": "integer", "minimum": 1 }
   }
 }

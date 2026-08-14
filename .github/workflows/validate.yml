@@ -1,3 +1,25 @@
+# Validate runtime config, and TELL SOMEONE when main goes red (SYN-577).
+#
+# This repository governs production behaviour, and until now nothing announced when its CI broke:
+# main sat red for a day across five commits. SYN-558 routes production alerts to Slack, but that
+# path only sees runtime errors inside the AWS account -- a failed Action in a different GitHub
+# repository reaches nobody through it.
+#
+# So this reuses SYN-558's sink rather than inventing a second one: the same
+# `synoptic/slack-alerts-webhook` incoming webhook, the same `#synoptic-alerts` channel, the same
+# `{"text": ...}` body the system-alerts Lambda posts. It cannot read the secret out of Secrets
+# Manager the way the Lambda does -- that would mean giving a PUBLIC repository an AWS role -- so
+# the webhook URL is a repository secret here.
+#
+# YIZHAR, ONE SETUP STEP: add the repository secret `SLACK_ALERTS_WEBHOOK` to
+# synoptic-ai/synoptic-runtime-config (Settings -> Secrets and variables -> Actions -> New
+# repository secret), with the value of the AWS Secrets Manager secret
+# `synoptic/slack-alerts-webhook` (account 369598751884, us-east-1) -- the same webhook SYN-558
+# uses. An organisation secret scoped to this repository works too. Until it is set, the alert job
+# logs a notice and does nothing; validation is unaffected either way.
+#
+# Repository secrets are never exposed to pull requests from forks, and this job only runs on
+# `push` to main, so a public fork cannot reach the webhook.
 name: Validate runtime config
 
 on:
@@ -17,3 +39,58 @@ jobs:
         with:
           python-version: "3.12"
       - run: python3 scripts/validate.py
+
+  alert:
+    name: Alert Slack on a red main
+    needs: validate
+    # `always()` so this runs precisely because the job before it failed. Push-to-main only: a red
+    # pull request is already in front of its author, and alerting on it would train the channel
+    # to be ignored.
+    if: always() && needs.validate.result != 'success' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Preflight - is the webhook configured?
+        id: preflight
+        env:
+          # `secrets.X != ''` yields "true"/"false" WITHOUT exposing the value -- the standard
+          # "is this secret set?" probe, same as the app repo's error-sentinel workflow.
+          HAS_WEBHOOK: ${{ secrets.SLACK_ALERTS_WEBHOOK != '' }}
+        run: |
+          set -uo pipefail
+          if [ "$HAS_WEBHOOK" != "true" ]; then
+            echo "::notice::Slack alerting not configured (missing secret SLACK_ALERTS_WEBHOOK) - see the header of this workflow file."
+          fi
+          echo "configured=$HAS_WEBHOOK" >> "$GITHUB_OUTPUT"
+
+      - name: Post to #synoptic-alerts
+        if: steps.preflight.outputs.configured == 'true'
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_ALERTS_WEBHOOK }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+          SHA: ${{ github.sha }}
+          ACTOR: ${{ github.actor }}
+          # Read as an env var, never interpolated into the script body: a commit message is
+          # attacker-controllable text and `${{ }}` inside `run:` would be a shell injection.
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          set -uo pipefail
+          # Same body shape as the SYN-558 forwarder (`{"text": ...}`), assembled with jq so no
+          # field can break the JSON. First line of the commit message only, and no config value.
+          SUBJECT="$(printf '%s' "${COMMIT_MESSAGE:-}" | head -n 1)"
+          TEXT="$(printf '%s\n%s\n%s\n%s' \
+            ":rotating_light: *runtime-config CI is red on main*" \
+            "Commit \`${SHA:0:7}\` by ${ACTOR}: ${SUBJECT:-unknown}" \
+            "runtime.json is the single source of production behaviour, so a red main means the last change to it was never validated." \
+            "<${RUN_URL}|Failed run> | <${COMMIT_URL}|Commit>")"
+          jq -nc --arg text "$TEXT" '{text: $text}' > "$RUNNER_TEMP/slack.json"
+          # Never echo the URL. A Slack outage must not be the only thing this job reports.
+          if ! curl -sS --fail-with-body --max-time 15 \
+                -H 'Content-Type: application/json' \
+                --data @"$RUNNER_TEMP/slack.json" "$SLACK_WEBHOOK" > /dev/null; then
+            echo "::error::Could not post the runtime-config CI failure to Slack."
+            exit 1
+          fi
+          echo "Alerted #synoptic-alerts."
