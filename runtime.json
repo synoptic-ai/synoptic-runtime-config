@@ -67,5 +67,7 @@
   "scheduler_enabled": true,
   "sync_dispatch_batch": 10,
   "tree_hedge_ms": 8000,
+  "tree_leaf_model": "gemini-3.5-flash-lite",
+  "tree_retrieval_model": "gemini-3.7-flash",
   "tree_retrieval_orgs": []
 }
