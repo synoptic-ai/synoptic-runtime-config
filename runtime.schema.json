@@ -342,6 +342,16 @@
       "type": "integer",
       "minimum": 0,
       "description": "Hedged-request threshold for tree descent calls, ms (SYN-587)."
+    },
+    "tree_leaf_model": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Model for tree-descent leaf extraction (SYN-587). Benchmarked flash-lite exception."
+    },
+    "tree_retrieval_model": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Model for tree-descent scans L0/L1 (SYN-587)."
     }
   }
 }
