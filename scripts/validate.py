@@ -74,6 +74,7 @@ def main():
             or expected == "integer" and isinstance(value, int) and not isinstance(value, bool)
             or expected == "string" and isinstance(value, str)
             and (key == "doc_viewer_users" or bool(value.strip()))
+            or expected == "array" and isinstance(value, list)
         )
         if not valid:
             errors.append(f"{key}: expected {expected}")
@@ -83,6 +84,18 @@ def main():
                 errors.append(f"{key}: below minimum {spec['minimum']}")
             if value > spec.get("maximum", value):
                 errors.append(f"{key}: above maximum {spec['maximum']}")
+        if isinstance(value, list):
+            item_spec = spec.get("items", {})
+            if item_spec.get("type") == "string" and any(
+                not isinstance(item, str) or len(item) < item_spec.get("minLength", 0)
+                for item in value
+            ):
+                errors.append(f"{key}: contains an invalid item")
+            if (
+                spec.get("uniqueItems")
+                and len({json.dumps(item, sort_keys=True) for item in value}) != len(value)
+            ):
+                errors.append(f"{key}: items must be unique")
         if key == "doc_viewer_users" and value:
             errors.append("doc_viewer_users: must stay empty in this public repository")
 

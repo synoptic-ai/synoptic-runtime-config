@@ -1,4 +1,7 @@
 {
+  "autocode_enabled_org_ids": [
+    "org_01KWGK1B26NDMCBSYSR2VGSA19"
+  ],
   "brief_active_days": 7,
   "brief_dispatch_batch": 10,
   "brief_lease_minutes": 20,
