@@ -67,7 +67,8 @@
   "scheduler_enabled": true,
   "sync_dispatch_batch": 10,
   "tree_build_orgs": [
-    "T3GAgPc4z9QxB0ygrTKXZ72LRM1i"
+    "T3GAgPc4z9QxB0ygrTKXZ72LRM1i",
+    "T3GWYrexval1gSDnMCMiX7HiBF87"
   ],
   "tree_hedge_ms": 8000,
   "tree_leaf_model": "gemini-3.5-flash-lite",
