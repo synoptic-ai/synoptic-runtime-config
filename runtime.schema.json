@@ -1,9 +1,309 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/synoptic-ai/synoptic-runtime-config/runtime.schema.json",
-  "title": "Synoptic runtime configuration",
-  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
+  "properties": {
+    "autocode_enabled_org_ids": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "brief_active_days": {
+      "maximum": 90,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "brief_dispatch_batch": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "brief_lease_minutes": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "brief_local_hour": {
+      "maximum": 23,
+      "minimum": 0,
+      "type": "integer"
+    },
+    "brief_scheduler_enabled": {
+      "type": "boolean"
+    },
+    "chat_agent_model": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "chat_max_concurrent_runs_per_org": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "chat_max_concurrent_runs_per_user": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "chat_max_run_minutes": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "collection_carry_forward_max_chars": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "collection_gate_churn_pct": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "collection_gate_collapse_pct": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "collection_gate_explosion_pct": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "collection_gate_unjudged_pct": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "collection_gate_unresolved_pct": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "collection_lookback_days": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "collection_map_concurrency": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "collection_map_model": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "collection_org_daily_cost_ceiling_usd": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "collection_require_shared_authority": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "collection_resolve_max_forms": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "collection_resolve_model": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "collection_retired_carry_max": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "collection_run_cost_ceiling_usd": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "compiler_model": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "crm_detection_batch": {
+      "maximum": 10,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "crm_detection_enabled": {
+      "type": "boolean"
+    },
+    "crm_detection_lease_minutes": {
+      "maximum": 120,
+      "minimum": 1,
+      "type": "integer"
+    },
+    "crm_detection_max_docs": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "default_window_days": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "doc_viewer_users": {
+      "maxLength": 0,
+      "type": "string"
+    },
+    "onboarding_kick": {
+      "type": "boolean"
+    },
+    "p0_batch_size": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "p0_bedrock_priority": {
+      "type": "boolean"
+    },
+    "p0_concurrency": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "p0_enabled": {
+      "type": "boolean"
+    },
+    "p0_model": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "p1_bedrock_priority": {
+      "type": "boolean"
+    },
+    "p1_concurrency": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "p1_model": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "p1_quote_target_chars": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "p1_summary_only_doc_threshold": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "p1_summary_only_token_threshold": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "p2_concurrency": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "p2_grounding_batch_char_budget": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "p2_grounding_model": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "p2_merge_char_budget": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "p2_merge_max_tokens": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "p2_merge_model": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "p2_merge_target_chars": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "p2_merge_tree_k": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "p3_answer_max_tokens": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "p3_answer_model": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "p3_input_char_budget": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "presentability_verifier_model": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "presentation_compile_concurrency": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "presentation_deck_planner_model": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "presentation_lane_b_concurrency": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "rbac_enforce": {
+      "type": "boolean"
+    },
+    "retrieval_enabled": {
+      "type": "boolean"
+    },
+    "retrieval_route_model": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "retrieval_top_k": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "scheduler_enabled": {
+      "type": "boolean"
+    },
+    "sync_dispatch_batch": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "tree_build_orgs": {
+      "description": "Orgs whose ingest pre-builds doc trees (SYN-587); building may lead routing.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "tree_exclude_orgs": {
+      "description": "Org ids EXCLUDED from the tree lane even under a wildcard allowlist; [\"*\"] disables trees everywhere. SYN-619.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "tree_hedge_ms": {
+      "description": "Hedged-request threshold for tree descent calls, ms (SYN-587).",
+      "minimum": 0,
+      "type": "integer"
+    },
+    "tree_leaf_model": {
+      "description": "Model for tree-descent leaf extraction (SYN-587). Benchmarked flash-lite exception.",
+      "minLength": 1,
+      "type": "string"
+    },
+    "tree_max_leaf_calls": {
+      "description": "Per-query ceiling on tree leaf extraction calls (SYN-587); excess docs fall back, counted leaf_capped.",
+      "minimum": 1,
+      "type": "integer"
+    },
+    "tree_retrieval_model": {
+      "description": "Model for tree-descent scans L0/L1 (SYN-587).",
+      "minLength": 1,
+      "type": "string"
+    },
+    "tree_retrieval_orgs": {
+      "description": "Org ids routed through tree-of-summaries descent (SYN-587). Empty = feature off.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
   "required": [
     "autocode_enabled_org_ids",
     "brief_active_days",
@@ -75,301 +375,9 @@
     "tree_leaf_model",
     "tree_max_leaf_calls",
     "tree_retrieval_model",
-    "tree_retrieval_orgs"
+    "tree_retrieval_orgs",
+    "tree_exclude_orgs"
   ],
-  "properties": {
-    "retrieval_route_model": {
-      "type": "string",
-      "minLength": 1
-    },
-    "p0_model": {
-      "type": "string",
-      "minLength": 1
-    },
-    "p1_model": {
-      "type": "string",
-      "minLength": 1
-    },
-    "p2_grounding_model": {
-      "type": "string",
-      "minLength": 1
-    },
-    "p3_answer_model": {
-      "type": "string",
-      "minLength": 1
-    },
-    "presentability_verifier_model": {
-      "type": "string",
-      "minLength": 1
-    },
-    "compiler_model": {
-      "type": "string",
-      "minLength": 1
-    },
-    "presentation_deck_planner_model": {
-      "type": "string",
-      "minLength": 1
-    },
-    "retrieval_top_k": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "p0_batch_size": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "p0_concurrency": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "p1_concurrency": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "p1_quote_target_chars": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "p1_summary_only_doc_threshold": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "p1_summary_only_token_threshold": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "p2_concurrency": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "p2_grounding_batch_char_budget": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "p3_input_char_budget": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "default_window_days": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "sync_dispatch_batch": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "brief_active_days": {
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 90
-    },
-    "brief_dispatch_batch": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "brief_local_hour": {
-      "type": "integer",
-      "minimum": 0,
-      "maximum": 23
-    },
-    "brief_lease_minutes": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "presentation_compile_concurrency": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "presentation_lane_b_concurrency": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "crm_detection_batch": {
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 10
-    },
-    "crm_detection_lease_minutes": {
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 120
-    },
-    "crm_detection_max_docs": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "retrieval_enabled": {
-      "type": "boolean"
-    },
-    "p1_bedrock_priority": {
-      "type": "boolean"
-    },
-    "p0_enabled": {
-      "type": "boolean"
-    },
-    "p0_bedrock_priority": {
-      "type": "boolean"
-    },
-    "scheduler_enabled": {
-      "type": "boolean"
-    },
-    "brief_scheduler_enabled": {
-      "type": "boolean"
-    },
-    "rbac_enforce": {
-      "type": "boolean"
-    },
-    "onboarding_kick": {
-      "type": "boolean"
-    },
-    "crm_detection_enabled": {
-      "type": "boolean"
-    },
-    "doc_viewer_users": {
-      "type": "string",
-      "maxLength": 0
-    },
-    "p2_merge_model": {
-      "type": "string",
-      "minLength": 1
-    },
-    "p2_merge_tree_k": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "p2_merge_target_chars": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "p2_merge_char_budget": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "p2_merge_max_tokens": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "p3_answer_max_tokens": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "collection_map_model": {
-      "type": "string",
-      "minLength": 1
-    },
-    "collection_resolve_model": {
-      "type": "string",
-      "minLength": 1
-    },
-    "collection_lookback_days": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "collection_map_concurrency": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "collection_resolve_max_forms": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "collection_carry_forward_max_chars": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "collection_retired_carry_max": {
-      "type": "integer",
-      "minimum": 0
-    },
-    "collection_require_shared_authority": {
-      "type": "integer",
-      "minimum": 0
-    },
-    "collection_run_cost_ceiling_usd": {
-      "type": "integer",
-      "minimum": 0
-    },
-    "collection_org_daily_cost_ceiling_usd": {
-      "type": "integer",
-      "minimum": 0
-    },
-    "collection_gate_unjudged_pct": {
-      "type": "integer",
-      "minimum": 0
-    },
-    "collection_gate_unresolved_pct": {
-      "type": "integer",
-      "minimum": 0
-    },
-    "collection_gate_collapse_pct": {
-      "type": "integer",
-      "minimum": 0
-    },
-    "collection_gate_explosion_pct": {
-      "type": "integer",
-      "minimum": 0
-    },
-    "collection_gate_churn_pct": {
-      "type": "integer",
-      "minimum": 0
-    },
-    "chat_agent_model": {
-      "type": "string",
-      "minLength": 1
-    },
-    "chat_max_concurrent_runs_per_user": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "chat_max_concurrent_runs_per_org": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "chat_max_run_minutes": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "autocode_enabled_org_ids": {
-      "type": "array",
-      "uniqueItems": true,
-      "items": {
-        "type": "string",
-        "minLength": 1
-      }
-    },
-    "tree_retrieval_orgs": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "description": "Org ids routed through tree-of-summaries descent (SYN-587). Empty = feature off."
-    },
-    "tree_hedge_ms": {
-      "type": "integer",
-      "minimum": 0,
-      "description": "Hedged-request threshold for tree descent calls, ms (SYN-587)."
-    },
-    "tree_leaf_model": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Model for tree-descent leaf extraction (SYN-587). Benchmarked flash-lite exception."
-    },
-    "tree_retrieval_model": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Model for tree-descent scans L0/L1 (SYN-587)."
-    },
-    "tree_build_orgs": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "description": "Orgs whose ingest pre-builds doc trees (SYN-587); building may lead routing."
-    },
-    "tree_max_leaf_calls": {
-      "type": "integer",
-      "minimum": 1,
-      "description": "Per-query ceiling on tree leaf extraction calls (SYN-587); excess docs fall back, counted leaf_capped."
-    }
-  }
+  "title": "Synoptic runtime configuration",
+  "type": "object"
 }
