@@ -71,6 +71,7 @@
     "T3GWYrexval1gSDnMCMiX7HiBF87",
     "T3I0l07TsMcGNhRH1xrSRiTCBRzQ"
   ],
+  "tree_exclude_orgs": [],
   "tree_hedge_ms": 8000,
   "tree_leaf_model": "gemini-3.5-flash-lite",
   "tree_max_leaf_calls": 4000,
