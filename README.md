@@ -32,8 +32,25 @@ over every service contract. It is the only place that can see both sides.
 4. Open a pull request.
 5. Merge after review and passing checks.
 
-The app and data services refresh the raw file every 45 seconds. They retain the last valid
-configuration during GitHub or validation failures. A cold-start failure uses code defaults.
+The app and data services refresh every 45 seconds and retain the last valid configuration through
+a read or validation failure.
+
+## How a merge reaches production (SYN-620)
+
+Merging to `main` runs `.github/workflows/publish.yml`, which copies `runtime.json` and
+`runtime.schema.json` to `s3://synoptic-lake-369598751884/runtime-config/current/`. **That S3
+object is what the services read first**; the raw GitHub URL below is their fallback and their
+public entry point.
+
+The reason is staleness, not speed: `raw.githubusercontent.com` is a CDN and can serve a previous
+generation for 5-30 minutes, so a 45-second poll against it was a promise about how often we ask,
+not about how fresh the answer is. Two rollouts in August 2026 ran the old behaviour for 15-23
+minutes after merge because of it. S3 is strongly consistent, so worst-case staleness is now the
+poll interval itself.
+
+If the publish job fails, the S3 object keeps its previous contents and readers fall through to
+the raw URL — the same behaviour they had before this existed. Nothing here changes where the
+truth lives: this repository is still the source, and S3 holds a copy of what `main` already says.
 
 ## Safety boundary
 
