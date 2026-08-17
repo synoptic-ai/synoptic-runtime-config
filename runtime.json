@@ -65,6 +65,9 @@
   "retrieval_route_model": "gemini-3.6-flash",
   "retrieval_top_k": 15,
   "scheduler_enabled": true,
+  "summary_evidence_sources": [
+    "github"
+  ],
   "sync_dispatch_batch": 10,
   "tree_build_orgs": [
     "T3GAgPc4z9QxB0ygrTKXZ72LRM1i",
