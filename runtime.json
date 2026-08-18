@@ -67,9 +67,7 @@
   "scheduler_enabled": true,
   "sync_dispatch_batch": 10,
   "tree_build_orgs": [
-    "T3GAgPc4z9QxB0ygrTKXZ72LRM1i",
-    "T3GWYrexval1gSDnMCMiX7HiBF87",
-    "T3I0l07TsMcGNhRH1xrSRiTCBRzQ"
+    "*"
   ],
   "tree_exclude_orgs": [],
   "tree_hedge_ms": 8000,
@@ -77,8 +75,6 @@
   "tree_max_leaf_calls": 4000,
   "tree_retrieval_model": "gemini-3.7-flash",
   "tree_retrieval_orgs": [
-    "T3GAgPc4z9QxB0ygrTKXZ72LRM1i",
-    "T3GWYrexval1gSDnMCMiX7HiBF87",
-    "T3I0l07TsMcGNhRH1xrSRiTCBRzQ"
+    "*"
   ]
 }
