@@ -73,6 +73,7 @@
   "tree_hedge_ms": 8000,
   "tree_leaf_model": "gemini-3.5-flash-lite",
   "tree_max_leaf_calls": 4000,
+  "tree_max_summary_calls": 4000,
   "tree_retrieval_model": "gemini-3.7-flash",
   "tree_retrieval_orgs": [
     "*"
