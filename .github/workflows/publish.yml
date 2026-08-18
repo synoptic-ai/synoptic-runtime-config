@@ -1,0 +1,106 @@
+# SYN-620 — push the merged config to S3, so services stop waiting on a CDN.
+#
+# THE PROBLEM THIS SOLVES. The fleet reads this document every 45 seconds, but it read it from
+# `raw.githubusercontent.com`, whose edge cache can serve a previous generation for ~5-30 minutes.
+# The 45-second TTL was therefore a promise about how often we ASK, not about how fresh the answer
+# is. It bit twice on 2026-08-16/17: a tree-retrieval rollout was still running the legacy path 23
+# minutes after the commit, and a pipeline flip was still on the previous generation 15+ minutes
+# after merge. Both looked like the config had not been saved.
+#
+# So the document is now PUSHED on merge instead of only being polled: this job writes runtime.json
+# (and runtime.schema.json next to it) into the S3 lake bucket, which is strongly consistent, and
+# `data/runtime_config.py` in the application repo reads that object first. Worst-case staleness
+# becomes the poll interval itself — 45 seconds — rather than whatever the CDN decided.
+#
+# GITHUB IS STILL THE SOURCE. This is a publish step, not a second source of truth: the operator
+# edits this repository, review and `Validate runtime config` still gate the merge, and the git
+# history is still the audit trail. S3 holds a copy of what main already says.
+#
+# WHAT HAPPENS IF THIS JOB FAILS. Nothing breaks. The S3 object simply keeps its previous
+# contents, readers fall back through the raw URL they used before this existed, and every service
+# holds its last-known-good either way. The application repo's daily `runtime-config-drift` check
+# is what notices a copy that stopped tracking main.
+#
+# YIZHAR, TWO SETUP STEPS (in this order, and only after the application-repo PR has merged):
+#   1. Apply the terraform in synoptic-ai/synoptic (`infra/terraform/modules/runtime-config-publisher`)
+#      to create the `synoptic-runtime-config-publish` role. It trusts ONLY this repository's main
+#      branch and may do exactly one thing: PutObject under `runtime-config/current/`.
+#   2. Add the repository variable `PUBLISH_ROLE_ARN` (Settings -> Secrets and variables -> Actions
+#      -> Variables) with that role's ARN. Until it is set this job logs a notice and does nothing;
+#      validation and every reader are unaffected.
+name: Publish runtime config
+
+on:
+  push:
+    branches: [main]
+  # A manual re-publish, for the case where the object and main have diverged (a failed run, or a
+  # role that was not yet in place when the config commit landed).
+  workflow_dispatch:
+
+# Only the newest commit on main matters: an older run finishing last would put an older document
+# in front of the fleet, which is the exact failure this workflow exists to remove.
+concurrency:
+  group: publish-runtime-config
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  id-token: write # OIDC — the only credential this repository holds for AWS.
+
+env:
+  BUCKET: synoptic-lake-369598751884
+  PREFIX: runtime-config/current
+  AWS_REGION: us-east-1
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Never publish a document the fleet cannot parse. `Validate runtime config` already ran on
+      # the pull request, but this workflow can also be dispatched by hand and on a branch state
+      # nothing gated, and an unparseable object in front of every service is worse than a stale
+      # one. Keys and types stay that workflow's job; this is the one check that must never be
+      # skipped on the write path.
+      - name: Both documents parse as JSON
+        run: |
+          set -euo pipefail
+          for f in runtime.json runtime.schema.json; do
+            python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$f"
+            echo "ok  $f parses"
+          done
+
+      - name: Preflight - is the publish role configured?
+        id: preflight
+        env:
+          # Same "is it set?" probe the alert job in validate.yml uses: the value never appears in
+          # a log, only whether it is empty.
+          HAS_ROLE: ${{ vars.PUBLISH_ROLE_ARN != '' }}
+        run: |
+          set -uo pipefail
+          if [ "$HAS_ROLE" != "true" ]; then
+            echo "::notice::Publishing not configured (missing repository variable PUBLISH_ROLE_ARN) - see the header of this workflow file."
+          fi
+          echo "configured=$HAS_ROLE" >> "$GITHUB_OUTPUT"
+
+      - name: Assume the publish role
+        if: steps.preflight.outputs.configured == 'true'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.PUBLISH_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: publish-runtime-config-${{ github.run_id }}
+
+      - name: Copy to s3://${{ env.BUCKET }}/${{ env.PREFIX }}/
+        if: steps.preflight.outputs.configured == 'true'
+        run: |
+          set -euo pipefail
+          # The schema goes FIRST. A reader that consumes both would rather see a new schema
+          # describing an old document (every reader ignores keys it does not consume) than an old
+          # schema rejecting a new document.
+          aws s3 cp runtime.schema.json "s3://${BUCKET}/${PREFIX}/runtime.schema.json" \
+            --content-type application/json --region "$AWS_REGION" --only-show-errors
+          aws s3 cp runtime.json "s3://${BUCKET}/${PREFIX}/runtime.json" \
+            --content-type application/json --region "$AWS_REGION" --only-show-errors
+          echo "published ${GITHUB_SHA} to s3://${BUCKET}/${PREFIX}/" >> "$GITHUB_STEP_SUMMARY"
