@@ -258,13 +258,6 @@
     "scheduler_enabled": {
       "type": "boolean"
     },
-    "summary_evidence_sources": {
-      "description": "Connector types whose docs may be answered from tree summaries (summary-grounded citations) instead of byte-verified quotes.",
-      "items": {
-        "type": "string"
-      },
-      "type": "array"
-    },
     "sync_dispatch_batch": {
       "minimum": 1,
       "type": "integer"
@@ -383,8 +376,7 @@
     "tree_max_leaf_calls",
     "tree_retrieval_model",
     "tree_retrieval_orgs",
-    "tree_exclude_orgs",
-    "summary_evidence_sources"
+    "tree_exclude_orgs"
   ],
   "title": "Synoptic runtime configuration",
   "type": "object"
