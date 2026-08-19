@@ -78,7 +78,5 @@
   "tree_max_leaf_calls": 4000,
   "tree_max_summary_calls": 4000,
   "tree_retrieval_model": "gemini-3.7-flash",
-  "tree_retrieval_orgs": [
-    "*"
-  ]
+  "tree_retrieval_orgs": []
 }
