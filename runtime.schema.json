@@ -291,6 +291,11 @@
       "minimum": 1,
       "type": "integer"
     },
+    "tree_max_summary_calls": {
+      "description": "Per-query ceiling on BATCHED summary-evidence rung calls (SYN-626, ~40 docs per call). Unlike the leaf ceiling it never drops a document: a batch it refuses does not run and its documents descend and are read the ordinary way, counted summary_capped.",
+      "minimum": 0,
+      "type": "integer"
+    },
     "tree_retrieval_model": {
       "description": "Model for tree-descent scans L0/L1 (SYN-587).",
       "minLength": 1,
@@ -374,6 +379,7 @@
     "tree_hedge_ms",
     "tree_leaf_model",
     "tree_max_leaf_calls",
+    "tree_max_summary_calls",
     "tree_retrieval_model",
     "tree_retrieval_orgs",
     "tree_exclude_orgs"
