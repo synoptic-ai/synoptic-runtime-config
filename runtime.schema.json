@@ -281,6 +281,10 @@
       "minimum": 0,
       "type": "integer"
     },
+    "tree_hierarchy_recall_first": {
+      "description": "Source-neutral hierarchy routing bias (SYN-633). True retains every plausibly relevant branch; false requires likely relevance.",
+      "type": "boolean"
+    },
     "tree_leaf_model": {
       "description": "Model for tree-descent leaf extraction (SYN-587). Benchmarked flash-lite exception.",
       "minLength": 1,
@@ -377,6 +381,7 @@
     "sync_dispatch_batch",
     "tree_build_orgs",
     "tree_hedge_ms",
+    "tree_hierarchy_recall_first",
     "tree_leaf_model",
     "tree_max_leaf_calls",
     "tree_max_summary_calls",
