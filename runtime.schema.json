@@ -161,6 +161,34 @@
     "p1_bedrock_priority": {
       "type": "boolean"
     },
+    "p1_claim_model": {
+      "type": "string",
+      "minLength": 1
+    },
+    "p1_claim_fallback_model": {
+      "type": "string",
+      "minLength": 1
+    },
+    "p1_claim_fallback_replicas": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "p1_claim_seed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "p1_claim_max_tokens": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "p1_retry_max_tokens": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "p1_estimated_raw_tokens_per_doc": {
+      "type": "integer",
+      "minimum": 0
+    },
     "p1_concurrency": {
       "minimum": 1,
       "type": "integer"
@@ -188,6 +216,18 @@
     "p2_grounding_batch_char_budget": {
       "minimum": 1,
       "type": "integer"
+    },
+    "p2_batch_char_budget": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "p2_max_tokens": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "p2_grounding_max_tokens": {
+      "type": "integer",
+      "minimum": 0
     },
     "p2_grounding_model": {
       "minLength": 1,
@@ -387,7 +427,17 @@
     "tree_max_summary_calls",
     "tree_retrieval_model",
     "tree_retrieval_orgs",
-    "tree_exclude_orgs"
+    "tree_exclude_orgs",
+    "p1_claim_model",
+    "p1_claim_fallback_model",
+    "p1_claim_fallback_replicas",
+    "p1_claim_seed",
+    "p1_claim_max_tokens",
+    "p1_retry_max_tokens",
+    "p1_estimated_raw_tokens_per_doc",
+    "p2_batch_char_budget",
+    "p2_max_tokens",
+    "p2_grounding_max_tokens"
   ],
   "title": "Synoptic runtime configuration",
   "type": "object"
