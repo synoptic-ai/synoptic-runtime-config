@@ -62,7 +62,7 @@
   "presentation_lane_b_concurrency": 24,
   "rbac_enforce": true,
   "retrieval_enabled": true,
-  "retrieval_route_model": "gemini-3.6-flash",
+  "retrieval_route_model": "gemini-3.1-pro-preview",
   "retrieval_top_k": 15,
   "scheduler_enabled": true,
   "sync_dispatch_batch": 10,
