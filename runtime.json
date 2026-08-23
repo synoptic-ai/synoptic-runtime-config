@@ -31,7 +31,7 @@
  "crm_detection_enabled": true,
  "crm_detection_lease_minutes": 30,
  "crm_detection_max_docs": 25,
- "default_window_days": 30,
+ "default_window_days": 365,
  "doc_viewer_users": "",
  "onboarding_kick": true,
  "p0_batch_size": 10,
