@@ -79,5 +79,6 @@
  "tree_retrieval_orgs": [
   "T3GWYrexval1gSDnMCMiX7HiBF87"
  ],
- "chat_marker_repair_model": "gemini-3.7-flash"
+ "chat_marker_repair_model": "gemini-3.7-flash",
+ "p3_compose_model": "gemini-3.7-flash"
 }

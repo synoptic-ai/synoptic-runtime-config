@@ -315,6 +315,10 @@
   "chat_marker_repair_model": {
    "minLength": 1,
    "type": "string"
+  },
+  "p3_compose_model": {
+   "minLength": 1,
+   "type": "string"
   }
  },
  "required": [
@@ -373,6 +377,7 @@
   "p2_merge_tree_k",
   "p3_answer_max_tokens",
   "p3_answer_model",
+  "p3_compose_model",
   "p3_input_char_budget",
   "presentability_verifier_model",
   "presentation_compile_concurrency",
