@@ -325,6 +325,7 @@
   "brief_local_hour",
   "brief_scheduler_enabled",
   "chat_agent_model",
+  "chat_marker_repair_model",
   "chat_max_concurrent_runs_per_org",
   "chat_max_concurrent_runs_per_user",
   "chat_max_run_minutes",
@@ -384,14 +385,14 @@
   "scheduler_enabled",
   "sync_dispatch_batch",
   "tree_build_orgs",
+  "tree_exclude_orgs",
   "tree_hedge_ms",
   "tree_hierarchy_recall_first",
   "tree_leaf_model",
   "tree_max_leaf_calls",
   "tree_max_summary_calls",
   "tree_retrieval_model",
-  "tree_retrieval_orgs",
-  "tree_exclude_orgs"
+  "tree_retrieval_orgs"
  ],
  "title": "Synoptic runtime configuration",
  "type": "object"
