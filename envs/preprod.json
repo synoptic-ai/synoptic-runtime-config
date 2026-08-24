@@ -1,0 +1,6 @@
+{
+  "_comment": "SYN-670 — preprod's overlay over runtime.json. ONLY the keys under experiment belong here; everything else is inherited so preprod keeps testing prod-like behaviour instead of drifting into its own configuration. Empty this file when an experiment ends: a value left behind here is a difference nobody is deliberately testing any more.",
+
+  "_experiment": "SYN-513 — DeepSeek V4 Flash as the tree lane's leaf extractor. Measured against gemini-3.5-flash-lite on Q11 (Leo AI, all time, prod engine): score 100.0 vs 92.46, 1,646 shipped rows vs 969 with every quote byte-verified in both, 411 documents vs 344, $10.98 vs $11.88. It also runs on a separate provider quota, which matters because Gemini peak TPM is within 2x of its ceiling. The leaf span cost $1.88 for the full 4,000-call budget, so the call ceiling is no longer what the leaf model can afford — raising it is the next experiment, and this is where to run it.",
+  "tree_leaf_model": "deepseek-v4-flash"
+}

@@ -24,7 +24,13 @@
 # YIZHAR, TWO SETUP STEPS (in this order, and only after the application-repo PR has merged):
 #   1. Apply the terraform in synoptic-ai/synoptic (`infra/terraform/modules/runtime-config-publisher`)
 #      to create the `synoptic-runtime-config-publish` role. It trusts ONLY this repository's main
-#      branch and may do exactly one thing: PutObject under `runtime-config/current/`.
+#      branch and may do exactly one thing: PutObject under `runtime-config/`.
+#
+# SYN-670 — ONE DOCUMENT PER ENVIRONMENT. This job no longer copies a single file: it renders
+# `runtime.json` plus each `envs/<name>.json` overlay into a complete, `env`-stamped document and
+# writes it to `runtime-config/<name>/`. `runtime-config/current/` stays as a byte-identical alias
+# of prod so every already-deployed reader is unaffected. The stamp is what lets a reader refuse a
+# document meant for another environment — preprod used to read prod's config and look healthy.
 #   2. Add the repository variable `PUBLISH_ROLE_ARN` (Settings -> Secrets and variables -> Actions
 #      -> Variables) with that role's ARN. Until it is set this job logs a notice and does nothing;
 #      validation and every reader are unaffected.
@@ -49,7 +55,7 @@ permissions:
 
 env:
   BUCKET: synoptic-lake-369598751884
-  PREFIX: runtime-config/current
+  PREFIX: runtime-config
   AWS_REGION: us-east-1
 
 jobs:
@@ -66,10 +72,18 @@ jobs:
       - name: Both documents parse as JSON
         run: |
           set -euo pipefail
-          for f in runtime.json runtime.schema.json; do
+          for f in runtime.json runtime.schema.json envs/*.json; do
             python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$f"
             echo "ok  $f parses"
           done
+
+      # Merge base + overlay per environment, once, here — so what is uploaded is exactly what was
+      # rendered and printed. A merge inside the upload loop could fail halfway and leave the fleet
+      # split across two generations, which is the failure this whole workflow exists to avoid.
+      - name: Render every environment
+        run: |
+          set -euo pipefail
+          python3 scripts/render.py dist | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Preflight - is the publish role configured?
         id: preflight
@@ -96,11 +110,23 @@ jobs:
         if: steps.preflight.outputs.configured == 'true'
         run: |
           set -euo pipefail
-          # The schema goes FIRST. A reader that consumes both would rather see a new schema
-          # describing an old document (every reader ignores keys it does not consume) than an old
-          # schema rejecting a new document.
-          aws s3 cp runtime.schema.json "s3://${BUCKET}/${PREFIX}/runtime.schema.json" \
+          # The schema goes FIRST, and once: it describes every environment, because an overlay may
+          # only override a key the base already defines. A reader that consumes both would rather
+          # see a new schema describing an old document (every reader ignores keys it does not
+          # consume) than an old schema rejecting a new document.
+          aws s3 cp runtime.schema.json "s3://${BUCKET}/${PREFIX}/current/runtime.schema.json" \
             --content-type application/json --region "$AWS_REGION" --only-show-errors
-          aws s3 cp runtime.json "s3://${BUCKET}/${PREFIX}/runtime.json" \
+
+          # Then the documents. `current/` is written LAST: it is the key every deployed service
+          # reads today, so until the readers move to explicit per-environment keys it is the one
+          # whose change is visible to production, and it should not precede the others.
+          for dir in dist/*/; do
+            name="$(basename "$dir")"
+            [ "$name" = "current" ] && continue
+            aws s3 cp "$dir/runtime.json" "s3://${BUCKET}/${PREFIX}/${name}/runtime.json" \
+              --content-type application/json --region "$AWS_REGION" --only-show-errors
+            echo "published ${GITHUB_SHA} to s3://${BUCKET}/${PREFIX}/${name}/" >> "$GITHUB_STEP_SUMMARY"
+          done
+          aws s3 cp dist/current/runtime.json "s3://${BUCKET}/${PREFIX}/current/runtime.json" \
             --content-type application/json --region "$AWS_REGION" --only-show-errors
-          echo "published ${GITHUB_SHA} to s3://${BUCKET}/${PREFIX}/" >> "$GITHUB_STEP_SUMMARY"
+          echo "published ${GITHUB_SHA} to s3://${BUCKET}/${PREFIX}/current/ (alias)" >> "$GITHUB_STEP_SUMMARY"
