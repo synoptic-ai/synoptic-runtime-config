@@ -18,9 +18,12 @@ would production do if I changed this one thing", and it stops answering that th
 somebody edits the base and forgets the copy. With overlays the diff *is* the experiment.
 
 On merge, the publisher renders base + overlay into a complete document per environment, stamps it
-with `"env": "<name>"`, and writes it to `s3://<lake>/runtime-config/<name>/runtime.json`.
-`runtime-config/current/` remains a byte-identical alias of prod for readers not yet moved to an
-explicit key. The stamp matters: a service configured for one environment refuses a document
+with `"env": "<name>"`, and writes it to `s3://<lake>/runtime-config/current/envs/<name>/runtime.json`.
+Production keeps its historical address, `runtime-config/current/runtime.json`, byte-identical, so
+no deployed reader changes. (The environments sit *under* `current/` rather than beside it because
+the publish role may write exactly that prefix, and widening it needs a terraform apply against a
+production root whose state has drifted — see the note in `publish.yml`. It is an address, and it
+moves up one level when that is reconciled.) The stamp matters: a service configured for one environment refuses a document
 stamped for another, instead of running someone else's behaviour and looking healthy.
 
 Two rules the merge enforces: an overlay may only override a key the base already defines (anything
