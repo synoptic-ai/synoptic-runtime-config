@@ -1,0 +1,3 @@
+{
+  "_comment": "SYN-670 — production's overlay over runtime.json, and it is EMPTY on purpose. Prod is the reviewed base document, unmodified; that is the invariant this file states. A value that belongs in production belongs in runtime.json, where it is reviewed once and inherited by every environment. Anything written here would be a production setting that the base does not admit to having, which is exactly the drift this layout exists to prevent."
+}
