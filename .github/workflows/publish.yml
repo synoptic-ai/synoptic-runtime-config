@@ -55,7 +55,22 @@ permissions:
 
 env:
   BUCKET: synoptic-lake-369598751884
-  PREFIX: runtime-config
+  # SYN-670 — the per-environment documents live UNDER `runtime-config/current/`, not beside it.
+  #
+  # This is not the address anyone would choose on a blank page; it is the address that needs no
+  # infrastructure change. The publish role may write exactly `runtime-config/current/*`, and
+  # widening it means a terraform apply against the production root — whose plan, on 2026-08-24,
+  # came back "33 to add, 18 to change, 18 to destroy", including CREATING an RDS instance while
+  # the production database is live. The state has drifted from the code, and reconciling that is
+  # its own careful piece of work; it is not a prerequisite this feature gets to impose.
+  #
+  # So `current/` is read here as "the current generation of every environment": prod's document
+  # keeps its exact historical address (`current/runtime.json` — every deployed reader is
+  # untouched) and each named environment gets `current/envs/<name>/runtime.json`. When the prod
+  # root is reconciled and the role can write `runtime-config/*`, moving these up one level is a
+  # two-line change here plus the reader default in the application repo.
+  PREFIX: runtime-config/current
+  ENV_PREFIX: runtime-config/current/envs
   AWS_REGION: us-east-1
 
 jobs:
@@ -114,19 +129,19 @@ jobs:
           # only override a key the base already defines. A reader that consumes both would rather
           # see a new schema describing an old document (every reader ignores keys it does not
           # consume) than an old schema rejecting a new document.
-          aws s3 cp runtime.schema.json "s3://${BUCKET}/${PREFIX}/current/runtime.schema.json" \
+          aws s3 cp runtime.schema.json "s3://${BUCKET}/${PREFIX}/runtime.schema.json" \
             --content-type application/json --region "$AWS_REGION" --only-show-errors
 
-          # Then the documents. `current/` is written LAST: it is the key every deployed service
-          # reads today, so until the readers move to explicit per-environment keys it is the one
-          # whose change is visible to production, and it should not precede the others.
+          # Then the documents. Prod's alias is written LAST: it is the key every deployed service
+          # reads today, so it is the one whose change is visible to production, and it should not
+          # precede the environments nothing is serving yet.
           for dir in dist/*/; do
             name="$(basename "$dir")"
             [ "$name" = "current" ] && continue
-            aws s3 cp "$dir/runtime.json" "s3://${BUCKET}/${PREFIX}/${name}/runtime.json" \
+            aws s3 cp "$dir/runtime.json" "s3://${BUCKET}/${ENV_PREFIX}/${name}/runtime.json" \
               --content-type application/json --region "$AWS_REGION" --only-show-errors
-            echo "published ${GITHUB_SHA} to s3://${BUCKET}/${PREFIX}/${name}/" >> "$GITHUB_STEP_SUMMARY"
+            echo "published ${GITHUB_SHA} to s3://${BUCKET}/${ENV_PREFIX}/${name}/" >> "$GITHUB_STEP_SUMMARY"
           done
-          aws s3 cp dist/current/runtime.json "s3://${BUCKET}/${PREFIX}/current/runtime.json" \
+          aws s3 cp dist/current/runtime.json "s3://${BUCKET}/${PREFIX}/runtime.json" \
             --content-type application/json --region "$AWS_REGION" --only-show-errors
-          echo "published ${GITHUB_SHA} to s3://${BUCKET}/${PREFIX}/current/ (alias)" >> "$GITHUB_STEP_SUMMARY"
+          echo "published ${GITHUB_SHA} to s3://${BUCKET}/${PREFIX}/runtime.json (prod alias)" >> "$GITHUB_STEP_SUMMARY"
