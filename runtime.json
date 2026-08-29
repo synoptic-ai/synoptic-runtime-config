@@ -110,5 +110,8 @@
  "thinking_research_stability_pct": 100,
  "thinking_research_marginal_pct": 0,
  "thinking_research_stable_passes": 0,
- "thinking_research_cost_ceiling_usd": 25
+ "thinking_research_cost_ceiling_usd": 25,
+ "stream_tree_orgs": [
+  "T3GWYrexval1gSDnMCMiX7HiBF87"
+ ]
 }
