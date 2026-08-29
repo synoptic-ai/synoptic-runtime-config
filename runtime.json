@@ -81,7 +81,9 @@
  ],
  "chat_marker_repair_model": "gemini-3.7-flash",
  "p3_compose_model": "gemini-3.7-flash",
- "streaming_orgs": [],
+ "streaming_orgs": [
+  "T3GWYrexval1gSDnMCMiX7HiBF87"
+ ],
  "streaming_exclude_orgs": [],
  "stream_wave_docs": 150,
  "stream_judge_model": "gemini-3.6-flash",
