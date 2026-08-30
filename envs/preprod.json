@@ -1,3 +1,13 @@
 {
-  "_comment": "SYN-670 — preprod's overlay over runtime.json. ONLY the keys under experiment belong here; everything else is inherited so preprod keeps testing prod-like behaviour instead of drifting into its own configuration. Empty this file when an experiment ends: a value left behind here is a difference nobody is deliberately testing any more."
+ "_comment": "SYN-670 — preprod's overlay over runtime.json. ONLY the keys under experiment belong here; everything else is inherited so preprod keeps testing prod-like behaviour instead of drifting into its own configuration. Empty this file when an experiment ends: a value left behind here is a difference nobody is deliberately testing any more.",
+ "streaming_orgs": [
+  "T3GWYrexval1gSDnMCMiX7HiBF87"
+ ],
+ "stream_tree_orgs": [
+  "T3GWYrexval1gSDnMCMiX7HiBF87"
+ ],
+ "thinking_medium_max_docs": 300,
+ "thinking_medium_cost_ceiling_usd": 3,
+ "thinking_medium_stability_pct": 80,
+ "thinking_medium_marginal_pct": 25
 }

@@ -437,6 +437,13 @@
   "thinking_research_cost_ceiling_usd": {
    "minimum": 0,
    "type": "integer"
+  },
+  "stream_tree_orgs": {
+   "items": {
+    "minLength": 1,
+    "type": "string"
+   },
+   "type": "array"
   }
  },
  "required": [
@@ -507,6 +514,7 @@
   "retrieval_top_k",
   "scheduler_enabled",
   "stream_judge_model",
+  "stream_tree_orgs",
   "stream_wave_docs",
   "streaming_exclude_orgs",
   "streaming_orgs",
