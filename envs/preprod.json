@@ -7,7 +7,7 @@
   "T3GWYrexval1gSDnMCMiX7HiBF87"
  ],
  "thinking_medium_max_docs": 300,
- "thinking_medium_cost_ceiling_usd": 3,
+ "thinking_medium_cost_ceiling_usd": 6,
  "thinking_medium_stability_pct": 80,
  "thinking_medium_marginal_pct": 25
 }
