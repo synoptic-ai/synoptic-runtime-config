@@ -2,6 +2,8 @@
  "autocode_enabled_org_ids": [
   "T3GAgPc4z9QxB0ygrTKXZ72LRM1i"
  ],
+ "ask_poll_fail_budget_s": 45,
+ "ask_poll_wait_ms": 15000,
  "brief_active_days": 7,
  "brief_dispatch_batch": 10,
  "brief_lease_minutes": 20,
