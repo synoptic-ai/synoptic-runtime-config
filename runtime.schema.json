@@ -11,6 +11,14 @@
    "type": "array",
    "uniqueItems": true
   },
+  "ask_poll_fail_budget_s": {
+   "minimum": 5,
+   "type": "integer"
+  },
+  "ask_poll_wait_ms": {
+   "minimum": 1000,
+   "type": "integer"
+  },
   "brief_active_days": {
    "maximum": 90,
    "minimum": 1,
@@ -448,6 +456,8 @@
  },
  "required": [
   "autocode_enabled_org_ids",
+  "ask_poll_fail_budget_s",
+  "ask_poll_wait_ms",
   "brief_active_days",
   "brief_dispatch_batch",
   "brief_lease_minutes",
