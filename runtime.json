@@ -2,6 +2,7 @@
  "autocode_enabled_org_ids": [
   "T3GAgPc4z9QxB0ygrTKXZ72LRM1i"
  ],
+ "answer_references_max": 200,
  "ask_poll_fail_budget_s": 45,
  "ask_poll_wait_ms": 15000,
  "brief_active_days": 7,
@@ -35,6 +36,7 @@
  "crm_detection_max_docs": 25,
  "default_window_days": 365,
  "doc_viewer_users": "",
+ "gpuer_pin_max_age_days": 90,
  "onboarding_kick": true,
  "p0_batch_size": 10,
  "p0_bedrock_priority": true,

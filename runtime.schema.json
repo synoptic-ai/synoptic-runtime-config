@@ -11,6 +11,10 @@
    "type": "array",
    "uniqueItems": true
   },
+  "answer_references_max": {
+   "minimum": 1,
+   "type": "integer"
+  },
   "ask_poll_fail_budget_s": {
    "minimum": 5,
    "type": "integer"
@@ -144,6 +148,10 @@
   "doc_viewer_users": {
    "maxLength": 0,
    "type": "string"
+  },
+  "gpuer_pin_max_age_days": {
+   "minimum": 1,
+   "type": "integer"
   },
   "onboarding_kick": {
    "type": "boolean"
@@ -456,6 +464,7 @@
  },
  "required": [
   "autocode_enabled_org_ids",
+  "answer_references_max",
   "ask_poll_fail_budget_s",
   "ask_poll_wait_ms",
   "brief_active_days",
@@ -490,6 +499,7 @@
   "crm_detection_max_docs",
   "default_window_days",
   "doc_viewer_users",
+  "gpuer_pin_max_age_days",
   "onboarding_kick",
   "p0_batch_size",
   "p0_bedrock_priority",
